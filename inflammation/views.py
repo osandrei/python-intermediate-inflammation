@@ -23,3 +23,4 @@ def visualize(data_dict):
     fig.tight_layout()
 
     plt.show()
+    plt.savefig("01.png")
