@@ -2,6 +2,8 @@ from unittest.mock import Mock
 import numpy as np
 from pathlib import Path
 
+import pytest
+
 def test_analyse_data_mock_source():
     from inflammation.compute_data import analyse_data
     data_source = Mock()
@@ -28,3 +30,16 @@ def test_analyse_data():
        0.80801707, 0.50323031, 0.47574665, 0.45197398, 0.22070227])
                                          )
     
+@pytest.mark.parametrize(
+        "data,expected_output",
+        [
+            ([[[0,1,0],[0,2,0]]],[0,0,0]),
+            ([[[0,1,0]],[[0,2,0]]],[0,np.sqrt(0.25),0])
+        ],
+        ids=["one file multiple rows","multiple files wit one row",]
+)
+def test_compute_standard_deviation_dy_day(data,expected_output):
+    from inflammation.compute_data import compute_standard_deviation_by_day
+
+    result = compute_standard_deviation_by_day(data)
+    np.testing.assert_almost_equal(result,expected_output)
