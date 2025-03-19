@@ -39,7 +39,7 @@ def test_analyse_data():
         ids=["one file multiple rows","multiple files wit one row",]
 )
 def test_compute_standard_deviation_dy_day(data,expected_output):
-    from inflammation.compute_data import compute_standard_deviation_by_day
+    from inflammation.models import compute_standard_deviation_by_day
 
     result = compute_standard_deviation_by_day(data)
     np.testing.assert_almost_equal(result,expected_output)
