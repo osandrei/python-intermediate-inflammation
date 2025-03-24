@@ -1,13 +1,16 @@
-"""Module containing mechanism for calculating standard deviation between datasets.
-"""
+"""Module containing mechanism for calculating standard deviation between datasets."""
 
 import glob
 import os
+
 import numpy as np
 
 from inflammation import models, views
 
+
 class CSVDataSource:
+    """Data source class for .csv files"""
+
     def __init__(self, data_dir):
         self.data_dir = data_dir
 
@@ -18,13 +21,18 @@ class CSVDataSource:
         ------
         list of 2D NumPy array with inflammation data
         """
-        data_file_paths = glob.glob(os.path.join(self.data_dir, 'inflammation*.csv'))
+        data_file_paths = glob.glob(os.path.join(self.data_dir, "inflammation*.csv"))
         if len(data_file_paths) == 0:
-            raise ValueError(f"No inflammation data CSV files found in path {self.data_dir}")
+            raise ValueError(
+                f"No inflammation data CSV files found in path {self.data_dir}"
+            )
         data = map(models.load_csv, data_file_paths)
         return data
 
+
 class JSONDataSource:
+    """Data source class for .json files"""
+
     def __init__(self, data_dir):
         self.data_dir = data_dir
 
@@ -35,9 +43,11 @@ class JSONDataSource:
         ------
         list of 2D NumPy array with inflammation data
         """
-        data_file_paths = glob.glob(os.path.join(self.data_dir, 'inflammation*.json'))
+        data_file_paths = glob.glob(os.path.join(self.data_dir, "inflammation*.json"))
         if len(data_file_paths) == 0:
-            raise ValueError(f"No inflammation data json files found in path {self.data_dir}")
+            raise ValueError(
+                f"No inflammation data json files found in path {self.data_dir}"
+            )
         data = map(models.load_json, data_file_paths)
         return data
 
@@ -48,7 +58,7 @@ def analyse_data(data_source):
     Gets all the inflammation data from CSV files within a directory,
     works out the mean inflammation value for each day across all datasets,
     then plots the graphs of standard deviation of these means.
-    
+
     Parameters
     ----------
     data_source: an object providing data
@@ -65,6 +75,6 @@ def analyse_data(data_source):
     daily_standard_deviation = np.std(means_by_day_matrix, axis=0)
 
     graph_data = {
-        'standard deviation by day': daily_standard_deviation,
+        "standard deviation by day": daily_standard_deviation,
     }
     views.visualize(graph_data)
